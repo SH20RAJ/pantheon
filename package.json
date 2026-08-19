@@ -31,8 +31,7 @@
 	},
 	"type": "module",
 	"scripts": {
-		"dev": "hexclave dev --config-file ./hexclave.config.ts -- bun run dev:inner",
-		"dev:inner": "vinext dev",
+		"dev": "vinext dev",
 		"build": "vinext build",
 		"start": "wrangler dev --config dist/server/wrangler.json",
 		"deploy": "vinext-cloudflare deploy --config dist/server/wrangler.json",

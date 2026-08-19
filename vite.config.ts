@@ -18,9 +18,10 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
+    include: ["tiny-case"],
     exclude: ["@hexclave/next", "@hexclave/js"],
   },
   ssr: {
-    noExternal: ["@hexclave/next", "@hexclave/js"],
+    noExternal: ["@hexclave/next", "@hexclave/js", "tiny-case"],
   },
 });

@@ -1,110 +1,65 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 @layer base {
   :root {
     color-scheme: dark;
-    --background: #030712;
-    --foreground: #f9fafb;
-    --card: #0b0f19;
-    --card-hover: #111827;
-    --border: #1f2937;
-    --accent-cyan: #06b6d4;
-    --accent-purple: #8b5cf6;
-    --accent-amber: #f59e0b;
-    --accent-pink: #ec4899;
+    --background: oklch(0 0 0);
+    --foreground: oklch(1 0 0);
+    --card: oklch(0.09 0 0);
+    --card-foreground: oklch(1 0 0);
+    --popover: oklch(0.09 0 0);
+    --popover-foreground: oklch(1 0 0);
+    --primary: oklch(1 0 0);
+    --primary-foreground: oklch(0 0 0);
+    --secondary: oklch(0.18 0 0);
+    --secondary-foreground: oklch(1 0 0);
+    --muted: oklch(0.15 0 0);
+    --muted-foreground: oklch(0.65 0 0);
+    --accent: oklch(0.18 0 0);
+    --accent-foreground: oklch(1 0 0);
+    --destructive: oklch(0.6 0 0);
+    --border: oklch(0.22 0 0);
+    --input: oklch(0.22 0 0);
+    --ring: oklch(1 0 0);
+    --radius: 0rem;
   }
 
   body {
-    background-color: var(--background);
-    color: var(--foreground);
-    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #000000;
+    color: #ffffff;
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     overflow-x: hidden;
+    @apply bg-background text-foreground;
+  }
+
+  * {
+    @apply border-border;
   }
 }
 
-/* Sci-fi Background Grid */
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
-
-.bg-radial-gradient {
-  background: radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.15), rgba(6, 182, 212, 0.08), transparent 70%);
-}
-
-/* Glassmorphism */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-panel-hover:hover {
-  background: rgba(30, 41, 59, 0.75);
-  border-color: rgba(6, 182, 212, 0.4);
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
-  transform: translateY(-2px);
-}
-
-/* Glowing text and borders */
-.glow-cyan {
-  text-shadow: 0 0 12px rgba(6, 182, 212, 0.6);
-}
-
-.glow-purple {
-  text-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
-}
-
-.glow-amber {
-  text-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
-}
-
-.border-glow-cyan {
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
-}
-
-.border-glow-purple {
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
-}
-
-/* Pulse Glow Animation */
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 6s infinite ease-in-out;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #030712;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #1f2937;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #06b6d4;
+@theme inline {
+  --font-heading: var(--font-mono);
+  --font-mono: var(--font-mono);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
 }

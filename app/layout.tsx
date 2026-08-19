@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { HexclaveProvider, HexclaveTheme } from "@hexclave/next";
 import { hexclaveServerApp } from "./hexclave/server";
 import "./globals.css";
+import { JetBrains_Mono } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
   title: "Pantheon '26 — BIT Mesra | Annual Science & Tech Festival",
@@ -31,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={cn("dark scroll-smooth font-mono", jetbrainsMono.variable)}>
       <head>
         {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-0CYFH8FJM7"></script>
@@ -47,7 +51,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           }}
         />
       </head>
-      <body className="bg-slate-950 text-slate-100 antialiased selection:bg-cyan-500 selection:text-slate-950">
+      <body className="bg-black text-white antialiased selection:bg-white selection:text-black">
         <HexclaveProvider app={hexclaveServerApp}>
           <HexclaveTheme>
             {children}

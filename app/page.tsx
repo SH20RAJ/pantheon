@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export const metadata: Metadata = {
   title: "Pantheon '26 — BIT Mesra | Science & Technology Festival",
-  description: "Clean, minimal template for Pantheon '26, the 26th annual science & technology festival of Birla Institute of Technology (BIT), Mesra, Ranchi.",
+  description: "Clean, minimal black & white template for Pantheon '26, the 26th annual science & technology festival of Birla Institute of Technology (BIT), Mesra, Ranchi.",
   keywords: ["Pantheon 2026", "BIT Mesra", "Tech Fest", "HackQuest", "Ranchi"],
   authors: [{ name: "Pantheon Team, BIT Mesra" }],
   creator: "BIT Mesra Technical Society",
@@ -27,75 +30,89 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between p-6 sm:p-12 font-sans selection:bg-cyan-500 selection:text-slate-950">
+    <main className="min-h-screen bg-black text-white flex flex-col justify-between p-6 sm:p-12 font-mono selection:bg-white selection:text-black">
       {/* Top Header */}
-      <header className="flex items-center justify-between border-b border-slate-800/80 pb-6 max-w-5xl mx-auto w-full">
+      <header className="flex items-center justify-between border-b border-neutral-800 pb-6 max-w-4xl mx-auto w-full">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-400 to-purple-500 flex items-center justify-center text-slate-950 font-bold font-mono text-sm">
+          <div className="w-7 h-7 bg-white text-black font-bold flex items-center justify-center text-xs">
             P
           </div>
-          <span className="font-bold tracking-wider text-base">PANTHEON '26</span>
+          <span className="font-bold tracking-widest text-sm uppercase">PANTHEON '26</span>
         </div>
-        <span className="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800/60">
+        <Badge variant="outline" className="border-neutral-700 text-neutral-300 font-mono text-[11px] py-0.5 px-2">
           BIT MESRA • RANCHI
-        </span>
+        </Badge>
       </header>
 
       {/* Hero Body */}
-      <section className="max-w-3xl mx-auto w-full my-auto py-16 space-y-8">
-        <div className="space-y-3">
-          <span className="text-xs uppercase tracking-widest font-mono text-purple-400">
+      <section className="max-w-3xl mx-auto w-full my-auto py-12 space-y-8">
+        <div className="space-y-4">
+          <Badge variant="secondary" className="bg-neutral-900 border border-neutral-800 text-neutral-400 font-mono text-[10px] uppercase tracking-widest">
             26TH ANNUAL SCIENCE & TECH FESTIVAL
-          </span>
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-100 leading-tight">
-            Pantheon '26 <span className="text-cyan-400">Template</span>
+          </Badge>
+          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-white uppercase leading-tight">
+            Pantheon '26 Template
           </h1>
-          <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
-            A clean, minimal, production-ready template for BIT Mesra's annual technical convention. Powered by vinext, Cloudflare Workers, and Hexclave auth.
+          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
+            Minimal, monochrome template for BIT Mesra's annual technical festival. Powered by vinext, Cloudflare Workers, Neon PostgreSQL, Drizzle ORM, Hexclave, and shadcn/ui.
           </p>
         </div>
 
-        {/* Quick Info Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-mono text-slate-400">DATES</span>
-            <p className="text-sm font-bold text-slate-200">October 16 - 18, 2026</p>
-          </div>
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-mono text-slate-400">LOCATION</span>
-            <p className="text-sm font-bold text-slate-200">BIT Mesra, Ranchi</p>
-          </div>
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 space-y-1">
-            <span className="text-[10px] uppercase font-mono text-slate-400">DEPLOYMENT</span>
-            <p className="text-sm font-bold text-cyan-400">Cloudflare Workers</p>
-          </div>
+        {/* Info Cards Grid using Pure shadcn UI */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <Card className="bg-neutral-950 border-neutral-800 text-white rounded-none">
+            <CardHeader className="p-4">
+              <CardDescription className="text-[10px] uppercase font-mono text-neutral-500">
+                DATES
+              </CardDescription>
+              <CardTitle className="text-xs font-semibold text-white">
+                October 16 - 18, 2026
+              </CardTitle>
+            </CardHeader>
+          </Card>
+
+          <Card className="bg-neutral-950 border-neutral-800 text-white rounded-none">
+            <CardHeader className="p-4">
+              <CardDescription className="text-[10px] uppercase font-mono text-neutral-500">
+                LOCATION
+              </CardDescription>
+              <CardTitle className="text-xs font-semibold text-white">
+                BIT Mesra, Ranchi
+              </CardTitle>
+            </CardHeader>
+          </Card>
+
+          <Card className="bg-neutral-950 border-neutral-800 text-white rounded-none">
+            <CardHeader className="p-4">
+              <CardDescription className="text-[10px] uppercase font-mono text-neutral-500">
+                INFRASTRUCTURE
+              </CardDescription>
+              <CardTitle className="text-xs font-semibold text-white">
+                Cloudflare Workers
+              </CardTitle>
+            </CardHeader>
+          </Card>
         </div>
 
-        {/* Action Links */}
-        <div className="flex flex-wrap items-center gap-4 pt-4">
-          <a
-            href="https://pantheon25.com"
-            target="_blank"
-            rel="noreferrer"
-            className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-semibold transition-colors"
-          >
-            Explore Pantheon 2025 Archive →
+        {/* Action Buttons using pure shadcn Button */}
+        <div className="flex flex-wrap items-center gap-3 pt-2">
+          <a href="https://pantheon25.com" target="_blank" rel="noreferrer">
+            <Button variant="default" className="bg-white text-black hover:bg-neutral-200 text-xs rounded-none font-mono">
+              Archive '25 →
+            </Button>
           </a>
-          <a
-            href="https://github.com/SH20RAJ/pantheon"
-            target="_blank"
-            rel="noreferrer"
-            className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold transition-colors"
-          >
-            GitHub Repository
+          <a href="https://github.com/SH20RAJ/pantheon" target="_blank" rel="noreferrer">
+            <Button variant="outline" className="border-neutral-800 bg-black text-neutral-300 hover:bg-neutral-900 hover:text-white text-xs rounded-none font-mono">
+              GitHub Repo
+            </Button>
           </a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800/80 pt-6 max-w-5xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-mono">
+      <footer className="border-t border-neutral-800 pt-6 max-w-4xl mx-auto w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 font-mono">
         <span>© {new Date().getFullYear()} PANTHEON • BIT MESRA</span>
-        <span>Minimal Template</span>
+        <span>SHADCN MONOCHROME TEMPLATE</span>
       </footer>
     </main>
   );

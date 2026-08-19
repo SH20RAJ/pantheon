@@ -17,4 +17,10 @@ export default defineConfig({
       },
     }),
   ],
+  optimizeDeps: {
+    exclude: ["@hexclave/next", "@hexclave/js"],
+  },
+  ssr: {
+    noExternal: ["@hexclave/next", "@hexclave/js"],
+  },
 });

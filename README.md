@@ -2,6 +2,8 @@
 
 This project was created with create-vinext-app.
 
+https://pantheon.shraj.workers.dev/
+
 ## Scripts
 
 - `pnpm run dev` starts the vinext dev server.

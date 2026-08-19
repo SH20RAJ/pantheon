@@ -1,70 +1,84 @@
-const links = [
-  {
-    href: "https://github.com/cloudflare/vinext",
-    label: "vinext",
-  },
-  {
-    href: "https://developers.cloudflare.com/workers/",
-    label: "Workers",
-  },
-];
+"use client";
 
-export const revalidate = 300;
+import React, { useState } from "react";
+import { Navbar } from "./components/Navbar";
+import { Hero } from "./components/Hero";
+import { EventExplorer } from "./components/EventExplorer";
+import { EventModal } from "./components/EventModal";
+import { HackQuestSection } from "./components/HackQuestSection";
+import { ScheduleTimeline } from "./components/ScheduleTimeline";
+import { CampusMap } from "./components/CampusMap";
+import { SponsorsSection } from "./components/SponsorsSection";
+import { TeamSection } from "./components/TeamSection";
+import { RegistrationModal } from "./components/RegistrationModal";
+import { FAQSection } from "./components/FAQSection";
+import { Footer } from "./components/Footer";
+import { EventItem } from "./data/pantheonData";
 
 export default function Home() {
+  const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
+  const [registerModalOpen, setRegisterModalOpen] = useState<boolean>(false);
+  const [registerInitialEventId, setRegisterInitialEventId] = useState<string | undefined>(undefined);
+
+  const handleOpenRegisterForEvent = (eventId?: string) => {
+    setRegisterInitialEventId(eventId);
+    setRegisterModalOpen(true);
+  };
+
   return (
-    <main className="min-h-screen bg-slate-50 px-6 py-10 text-slate-950">
-      <section className="mx-auto flex max-w-4xl flex-col gap-8">
-        <div className="flex flex-col gap-4">
-          <p className="text-sm font-semibold uppercase tracking-wide text-orange-600">
-            vinext + Cloudflare Workers
-          </p>
-          <h1 className="max-w-2xl text-4xl font-semibold leading-tight sm:text-5xl">
-            Build Next.js-style apps with Vite and deploy them to the edge.
-          </h1>
-          <p className="max-w-2xl text-lg leading-8 text-slate-700">
-            This App Router project is wired for vinext, Tailwind CSS, and Cloudflare Workers.
-          </p>
-        </div>
+    <main className="min-h-screen bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950">
+      {/* Floating Glassmorphic Header */}
+      <Navbar onOpenRegister={() => handleOpenRegisterForEvent()} />
 
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-lg border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold">Develop</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-600">Run the vinext dev server locally.</p>
-            <code className="mt-4 block rounded bg-slate-100 px-3 py-2 text-sm">pnpm run dev</code>
-          </div>
-          <div className="rounded-lg border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold">Build</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-600">Create Worker-ready production output.</p>
-            <code className="mt-4 block rounded bg-slate-100 px-3 py-2 text-sm">pnpm run build</code>
-          </div>
-          <div className="rounded-lg border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold">Deploy</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-600">Ship the generated Worker with Wrangler.</p>
-            <code className="mt-4 block rounded bg-slate-100 px-3 py-2 text-sm">pnpm run deploy</code>
-          </div>
-        </div>
+      {/* Hero Section */}
+      <Hero onOpenRegister={() => handleOpenRegisterForEvent()} />
 
-        <nav className="flex flex-wrap gap-3">
-          {links.map((link) => (
-            <a
-              className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium hover:bg-slate-100"
-              href={link.href}
-              key={link.href}
-              rel="noreferrer"
-              target="_blank"
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium hover:bg-slate-100"
-            href="/api/hello"
-          >
-            API route
-          </a>
-        </nav>
-      </section>
+      {/* Flagship HackQuest 2.0 Feature */}
+      <HackQuestSection onRegister={() => handleOpenRegisterForEvent("hackquest-2026")} />
+
+      {/* Event Explorer & Filterable Cards */}
+      <EventExplorer
+        onSelectEvent={(ev) => setSelectedEvent(ev)}
+        onRegister={(eventId) => handleOpenRegisterForEvent(eventId)}
+      />
+
+      {/* Festival Schedule Itinerary */}
+      <ScheduleTimeline />
+
+      {/* BIT Mesra Campus Venue Map */}
+      <CampusMap />
+
+      {/* Sponsors & Innovation Partners */}
+      <SponsorsSection />
+
+      {/* Organizing Team & Committee */}
+      <TeamSection />
+
+      {/* FAQs Section */}
+      <FAQSection />
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Event Detail Rulebook Modal */}
+      {selectedEvent && (
+        <EventModal
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+          onRegister={(eventId) => handleOpenRegisterForEvent(eventId)}
+        />
+      )}
+
+      {/* Registration & Pass Generator Modal */}
+      {registerModalOpen && (
+        <RegistrationModal
+          initialEventId={registerInitialEventId}
+          onClose={() => {
+            setRegisterModalOpen(false);
+            setRegisterInitialEventId(undefined);
+          }}
+        />
+      )}
     </main>
   );
 }

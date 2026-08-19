@@ -4,11 +4,12 @@
 	"private": true,
 	"packageManager": "bun@1.3.11",
 	"dependencies": {
+		"@vinext/cloudflare": "latest",
+		"lucide-react": "^1.32.0",
 		"react": "latest",
 		"react-dom": "latest",
-		"vinext": "latest",
 		"react-server-dom-webpack": "latest",
-		"@vinext/cloudflare": "latest"
+		"vinext": "latest"
 	},
 	"devDependencies": {
 		"@cloudflare/vite-plugin": "latest",

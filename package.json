@@ -22,6 +22,7 @@
 		"react": "latest",
 		"react-day-picker": "^10.0.1",
 		"react-dom": "latest",
+		"react-icons": "^5.7.0",
 		"react-resizable-panels": "^4.12.3",
 		"react-server-dom-webpack": "latest",
 		"recharts": "3.8.0",

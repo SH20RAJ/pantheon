@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { HexclaveProvider, HexclaveTheme } from "@hexclave/next";
-import { hexclaveServerApp } from "./hexclave/server";
+// import { hexclaveServerApp } from "./hexclave/server";
 import "./globals.css";
 import { JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -52,11 +52,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className="bg-black text-white antialiased selection:bg-white selection:text-black">
-        <HexclaveProvider app={hexclaveServerApp}>
-          <HexclaveTheme>
+        {/* <HexclaveProvider app={hexclaveServerApp}> */}
+          {/* <HexclaveTheme> */}
             {children}
-          </HexclaveTheme>
-        </HexclaveProvider>
+          {/* </HexclaveTheme> */}
+        {/* </HexclaveProvider> */}
       </body>
     </html>
   );

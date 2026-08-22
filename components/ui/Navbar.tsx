@@ -3,10 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navItems = [
-  { label: "01 / Events", href: "/events" },
-  { label: "02 / Team", href: "/teams" },
-  { label: "03 / Schedule", href: "/#schedule" },
-  { label: "04 / About", href: "/#about" },
+  { label: "01 / Home", href: "/" },
+  { label: "02 / Events", href: "/events" },
+  { label: "03 / Gallery", href: "/gallery" },
+  { label: "04 / Team", href: "/teams" },
+  { label: "05 / Schedule", href: "/#schedule" },
+  { label: "06 / About", href: "/#about" },
 ];
 
 export default function Navbar() {
@@ -43,7 +45,7 @@ export default function Navbar() {
           </div>
 
           <div className="relative flex items-center border border-pantheon-border bg-pantheon-black/50 backdrop-blur-xl">
-
+          
             <span className="absolute -top-[4px] left-1/2 size-2 -translate-x-1/2 rotate-45 border border-pantheon-purple-light/50 bg-pantheon-black" />
 
             {navItems.map((item) => (
@@ -180,7 +182,7 @@ export default function Navbar() {
             </Link>
           </div>
         </details>
-
+        
       </nav>
     </header>
   );

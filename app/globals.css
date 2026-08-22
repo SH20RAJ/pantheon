@@ -80,4 +80,236 @@
 
   --color-pantheon-grid: rgba(255, 255, 255, 0.02);
   --color-pantheon-purple-glow: rgba(124, 58, 237, 0.2);
+
+  /* purple scale — accent only, never a large fill */
+  --color-pantheon-purple-deep: #4c1d95;
+  --color-pantheon-purple-wash: rgba(124, 58, 237, 0.08);
+  --color-pantheon-purple-dim: rgba(124, 58, 237, 0.15);
+  --color-pantheon-purple-line: rgba(124, 58, 237, 0.35);
+  --color-pantheon-purple-edge: rgba(167, 139, 250, 0.5);
+
+  /* elevation surfaces */
+  --color-pantheon-elevated: #0a0a0c;
+  --color-pantheon-panel: rgba(255, 255, 255, 0.015);
+
+  /* motion */
+  --ease-pantheon: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-marquee: pantheon-marquee 45s linear infinite;
+  --animate-scan: pantheon-scan 7s linear infinite;
+  --animate-glow: pantheon-glow 6s ease-in-out infinite;
+  --animate-drift: pantheon-drift 24s ease-in-out infinite alternate;
+  --animate-rise: pantheon-rise 0.7s var(--ease-pantheon) both;
+
+  /* geometry */
+  --pantheon-grid-size: 64px;
+  --pantheon-bracket: 14px;
+
+  /* type — three voices: display for headlines, body for prose,
+     mono (inherited from next/font) for technical chrome */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* radii — cards are soft, chrome (filters, badges) stays sharp */
+  --radius-pantheon-sm: 0.5rem;
+  --radius-pantheon: 1rem;
+  --radius-pantheon-lg: 1.5rem;
+
+  /* elevation */
+  --shadow-pantheon-card: 0 1px 2px rgba(0, 0, 0, 0.6), 0 8px 24px -12px rgba(0, 0, 0, 0.9);
+  --shadow-pantheon-lift: 0 24px 60px -24px rgba(124, 58, 237, 0.55),
+                          0 8px 24px -12px rgba(0, 0, 0, 0.9);
+}
+
+/* ── keyframes ─────────────────────────────────────────────── */
+
+@keyframes pantheon-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes pantheon-scan {
+  from { transform: translate3d(0, -100%, 0); }
+  to   { transform: translate3d(0, 100vh, 0); }
+}
+
+@keyframes pantheon-glow {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 0.7;  transform: scale(1.12); }
+}
+
+@keyframes pantheon-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(40px, -30px, 0); }
+}
+
+@keyframes pantheon-rise {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── reusable surface primitives ───────────────────────────── */
+
+/* technical grid wash — used on every page header */
+.pantheon-grid-bg {
+  background-image:
+    linear-gradient(to right, var(--color-pantheon-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-pantheon-grid) 1px, transparent 1px);
+  background-size: var(--pantheon-grid-size) var(--pantheon-grid-size);
+}
+
+/* purple bloom behind headers */
+.pantheon-bloom {
+  background: radial-gradient(
+    circle at center,
+    var(--color-pantheon-purple-glow) 0%,
+    transparent 70%
+  );
+  filter: blur(80px);
+}
+
+/* corner brackets — draw in on hover of .group */
+.pantheon-brackets::before,
+.pantheon-brackets::after {
+  content: "";
+  position: absolute;
+  width: var(--pantheon-bracket);
+  height: var(--pantheon-bracket);
+  border-color: var(--color-pantheon-purple-edge);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-pantheon);
+  pointer-events: none;
+}
+.pantheon-brackets::before {
+  top: 10px; left: 10px;
+  border-top: 1px solid; border-left: 1px solid;
+}
+.pantheon-brackets::after {
+  bottom: 10px; right: 10px;
+  border-bottom: 1px solid; border-right: 1px solid;
+}
+.group:hover .pantheon-brackets::before,
+.group:hover .pantheon-brackets::after { opacity: 1; }
+
+/* ── elevated card ─────────────────────────────────────────
+   Rounded, self-contained surface: soft gradient fill, a bright
+   1px highlight along the top edge, and a lift + purple bloom
+   on hover. Used by every event card. */
+.pantheon-card {
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--radius-pantheon);
+  border: 1px solid var(--color-pantheon-border);
+  background:
+    linear-gradient(
+      168deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.015) 38%,
+      transparent 70%
+    ),
+    var(--color-pantheon-elevated);
+  box-shadow: var(--shadow-pantheon-card);
+  transition:
+    transform 0.5s var(--ease-pantheon),
+    border-color 0.5s var(--ease-pantheon),
+    box-shadow 0.5s var(--ease-pantheon);
+}
+
+/* top-edge specular highlight */
+.pantheon-card::before {
+  content: "";
+  position: absolute;
+  inset-inline: 12%;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-pantheon-purple-edge),
+    transparent
+  );
+  opacity: 0.45;
+  transition: opacity 0.5s var(--ease-pantheon);
+  pointer-events: none;
+}
+
+/* only clickable cards lift — static panels stay put */
+.pantheon-card-interactive:hover {
+  transform: translate3d(0, -6px, 0);
+  border-color: var(--color-pantheon-purple-line);
+  box-shadow: var(--shadow-pantheon-lift);
+}
+.pantheon-card-interactive:hover::before { opacity: 1; }
+
+/* flagship variant — warmer purple bed, always on */
+.pantheon-card-flagship {
+  background:
+    linear-gradient(
+      168deg,
+      var(--color-pantheon-purple-dim) 0%,
+      rgba(255, 255, 255, 0.02) 42%,
+      transparent 72%
+    ),
+    var(--color-pantheon-elevated);
+  border-color: var(--color-pantheon-purple-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pantheon-card-interactive:hover { transform: none; }
+}
+
+/* ── long-form prose ───────────────────────────────────────
+   Body copy set in Inter at a real reading size. Mono is kept
+   for labels only — it is unreadable past a sentence. */
+.pantheon-prose {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.75;
+  letter-spacing: 0.005em;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 68ch;
+}
+.pantheon-prose strong { color: #fff; font-weight: 600; }
+
+/* opening paragraph — larger, brighter, sets the page's tone */
+.pantheon-lead {
+  font-family: var(--font-body);
+  font-size: 1.1875rem;
+  line-height: 1.65;
+  letter-spacing: -0.011em;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 60ch;
+}
+
+/* headline defaults — display face, tight tracking.
+   Wide letterspacing reads as "dead" at large sizes. */
+.pantheon-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.028em;
+}
+
+/* section titles inside a page body */
+.pantheon-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  color: #fff;
+}
+
+/* edge-fade for marquees and scroll rails */
+.pantheon-fade-x {
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* stroked display type — outline echo behind the solid headline */
+.pantheon-stroke {
+  -webkit-text-stroke: 1px var(--color-pantheon-border);
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="animate-"] { animation: none !important; }
 }

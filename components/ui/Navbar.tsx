@@ -1,11 +1,12 @@
 import { ArrowUpRight, Menu, Hexagon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const navItems = [
-  { label: "01 / Events", href: "#events" },
-  { label: "02 / Team", href: "#team" },
-  { label: "03 / Schedule", href: "#schedule" },
-  { label: "04 / About", href: "#about" },
+  { label: "01 / Events", href: "/events" },
+  { label: "02 / Team", href: "/#team" },
+  { label: "03 / Schedule", href: "/#schedule" },
+  { label: "04 / About", href: "/#about" },
 ];
 
 export default function Navbar() {
@@ -16,8 +17,8 @@ export default function Navbar() {
         <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center">
 
           <div className="flex items-center">
-            <a
-              href="#"
+            <Link
+              href="/"
               className="group flex items-center gap-3"
             >
               <div className="relative grid size-10 place-items-center">
@@ -38,7 +39,7 @@ export default function Navbar() {
                   BIT MESRA / 2026
                 </div>
               </div>
-            </a>
+            </Link>
           </div>
 
           <div className="relative flex items-center border border-pantheon-border bg-pantheon-black/50 backdrop-blur-xl">
@@ -46,7 +47,7 @@ export default function Navbar() {
             <span className="absolute -top-[4px] left-1/2 size-2 -translate-x-1/2 rotate-45 border border-pantheon-purple-light/50 bg-pantheon-black" />
 
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
                 className="
@@ -69,13 +70,13 @@ export default function Navbar() {
                     group-hover:w-[60%]
                   "
                 />
-              </a>
+              </Link>
             ))}
           </div>
 
           <div className="flex justify-end">
-            <a
-              href="#register"
+            <Link
+              href="/#register"
               className="
                 group relative flex items-center gap-4
                 border border-white/15
@@ -92,7 +93,7 @@ export default function Navbar() {
               <span className="grid size-6 place-items-center bg-pantheon-black text-pantheon-white transition-transform duration-300 group-hover:rotate-45">
                 <ArrowUpRight size={13} />
               </span>
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -136,7 +137,7 @@ export default function Navbar() {
 
           <div className="mt-2 border border-pantheon-border bg-pantheon-black/90 p-2 backdrop-blur-2xl">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
                 href={item.href}
                 className="
@@ -157,11 +158,11 @@ export default function Navbar() {
                   size={14}
                   className="text-pantheon-purple-light"
                 />
-              </a>
+              </Link>
             ))}
 
-            <a
-              href="#register"
+            <Link
+              href="/#register"
               className="
                 mt-2 flex items-center
                 justify-between
@@ -174,7 +175,7 @@ export default function Navbar() {
             >
               <span>Enter Pantheon</span>
               <ArrowUpRight size={15} />
-            </a>
+            </Link>
           </div>
         </details>
 

@@ -1,5 +1,12 @@
+export type EventTier = 'Flagship' | 'Formal' | 'Informal';
+export type EventDay = 1 | 2 | 3;
+
 export interface EventItem {
   id: string;
+  slug: string;
+  tier: EventTier;
+  days: EventDay[];
+  image?: string;
   title: string;
   subtitle: string;
   category: 'hackathon' | 'robotics' | 'coding' | 'esummit' | 'gaming' | 'workshops';
@@ -13,7 +20,7 @@ export interface EventItem {
   overview: string;
   rules: string[];
   contacts: { name: string; phone: string; role: string }[];
-  status: 'Open' | 'Filling Fast' | 'Closed';
+  judgementCriteria?: string[];
   featured?: boolean;
 }
 
@@ -68,6 +75,9 @@ export const FEST_DETAILS = {
 export const EVENTS_DATA: EventItem[] = [
   {
     id: "hackquest-2026",
+    slug: "hackquest-2026",
+    tier: "Flagship",
+    days: [1, 2],
     title: "HackQuest 2.0",
     subtitle: "36-Hour Flagship National Hackathon",
     category: "hackathon",
@@ -90,11 +100,13 @@ export const EVENTS_DATA: EventItem[] = [
       { name: "Aarav Sharma", phone: "+91 98765 43210", role: "Hackathon Lead" },
       { name: "Ananya Roy", phone: "+91 98123 45678", role: "Technical Logistics" }
     ],
-    status: "Filling Fast",
     featured: true
   },
   {
     id: "robowars-2026",
+    slug: "robowars-2026",
+    tier: "Flagship",
+    days: [2],
     title: "RoboWars: Steel Carnage",
     subtitle: "Heavyweight & Lightweight Robot Combat Arena",
     category: "robotics",
@@ -117,11 +129,13 @@ export const EVENTS_DATA: EventItem[] = [
       { name: "Rohan Verma", phone: "+91 97654 32109", role: "RoboWars Convener" },
       { name: "Vikram Singh", phone: "+91 96543 21098", role: "Arena Safety Officer" }
     ],
-    status: "Open",
     featured: true
   },
   {
     id: "codezilla-2026",
+    slug: "codezilla-2026",
+    tier: "Formal",
+    days: [1],
     title: "Codezilla 2026",
     subtitle: "Speed Competitive Programming Clash",
     category: "coding",
@@ -141,11 +155,13 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Priya Malhotra", phone: "+91 95432 10987", role: "ACM Lead" }
     ],
-    status: "Open",
     featured: false
   },
   {
     id: "inventors-forge",
+    slug: "inventors-forge",
+    tier: "Flagship",
+    days: [2],
     title: "Inventor's Forge",
     subtitle: "National B-Plan & Startup Pitch Competition",
     category: "esummit",
@@ -165,11 +181,13 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Aditya Vardhan", phone: "+91 94321 09876", role: "EDC President" }
     ],
-    status: "Open",
     featured: true
   },
   {
     id: "cad-clash",
+    slug: "cad-clash",
+    tier: "Formal",
+    days: [1],
     title: "CAD Clash & Aero Design",
     subtitle: "3D Mechanical Modeling & FEA Challenge",
     category: "workshops",
@@ -188,11 +206,13 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Kunal Ghosh", phone: "+91 93210 98765", role: "Team Srijan Lead" }
     ],
-    status: "Open",
     featured: false
   },
   {
     id: "valorant-showdown",
+    slug: "valorant-showdown",
+    tier: "Informal",
+    days: [1, 2, 3],
     title: "Pixel Arena: Valorant Championship",
     subtitle: "5v5 Collegiate Esports Tournament",
     category: "gaming",
@@ -212,11 +232,13 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Siddharth Jha", phone: "+91 92109 87654", role: "Esports Head" }
     ],
-    status: "Filling Fast",
     featured: true
   },
   {
     id: "maze-runner-bot",
+    slug: "maze-runner-bot",
+    tier: "Formal",
+    days: [3],
     title: "Maze Runner & Line Follower",
     subtitle: "Autonomous Micro-Robotics Challenge",
     category: "robotics",
@@ -235,11 +257,13 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Megha Sahu", phone: "+91 91098 76543", role: "Robotics Core" }
     ],
-    status: "Open",
     featured: false
   },
   {
     id: "ai-llm-workshop",
+    slug: "ai-llm-workshop",
+    tier: "Formal",
+    days: [2],
     title: "Hands-on Generative AI & Edge LLMs",
     subtitle: "Industrial Masterclass & Certification",
     category: "workshops",
@@ -258,7 +282,6 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Tanmay Das", phone: "+91 90123 45678", role: "IEEE Chair" }
     ],
-    status: "Open",
     featured: false
   }
 ];

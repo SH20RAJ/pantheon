@@ -6,6 +6,7 @@ const navItems = [
   { label: "02 / Team", href: "#team" },
   { label: "03 / Schedule", href: "#schedule" },
   { label: "04 / About", href: "#about" },
+  { label: "05 / Leaderboard", href: "/leaderboard" },
 ];
 
 export default function Navbar() {

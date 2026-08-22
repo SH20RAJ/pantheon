@@ -996,7 +996,7 @@ export default function DomeGallery({
           </div>
 
           <div
-            className="absolute inset-0 m-auto z-[3] pointer-events-none"
+            className="absolute inset-0 m-auto z-3 pointer-events-none"
             style={{
               backgroundImage: `radial-gradient(rgba(235, 235, 235, 0) 65%, var(--overlay-blur-color, ${overlayBlurColor}) 100%)`,
             }}

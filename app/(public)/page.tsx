@@ -68,7 +68,7 @@ export default function Home() {
             alt="Pantheon"
             width={600}
             height={600}
-            className="h-auto w-[500px] md:w-[650px]"
+            className="h-auto w-125 md:w-162.5"
             priority
           />
         </div>

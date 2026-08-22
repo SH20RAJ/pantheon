@@ -2,14 +2,34 @@ import type { Metadata } from "next";
 import { HexclaveProvider, HexclaveTheme } from "@hexclave/next";
 // import { hexclaveServerApp } from "./hexclave/server";
 import "./globals.css";
-import { JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Space_Grotesk, Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
+import GlobalStyles from "@/components/ui/GlobalStyles";
 
+<<<<<<< HEAD
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+});
+=======
+/* mono = technical chrome (labels, meta, badges) — the existing voice */
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
+>>>>>>> origin/main
+
+/* display = headlines; geometric, techy, holds up at large sizes */
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["500", "600", "700"],
+});
+
+/* body = long-form prose; mono is unreadable past a sentence */
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-body",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -56,7 +76,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+<<<<<<< HEAD
       className={cn("dark scroll-smooth font-mono", jetbrainsMono.variable)}
+=======
+      className={cn(
+        "dark scroll-smooth font-mono",
+        jetbrainsMono.variable,
+        spaceGrotesk.variable,
+        inter.variable
+      )}
+>>>>>>> origin/main
     >
       <head>
         {/* Google tag (gtag.js) */}
@@ -77,6 +106,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-black text-white antialiased selection:bg-white selection:text-black">
+        <GlobalStyles />
         {/* <HexclaveProvider app={hexclaveServerApp}> */}
         {/* <HexclaveTheme> */}
         <Navbar />

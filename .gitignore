@@ -8,6 +8,8 @@ next-env.d.ts
 .DS_Store
 *.DS_Store
 
+tsconfig.tsbuildinfo
+
 .dev.vars*
 !.dev.vars.example
 !.env.example

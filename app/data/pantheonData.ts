@@ -1,11 +1,74 @@
+/**
+ * Interest tags — the vocabulary users pick from when personalising.
+ * Deliberately domain keywords, not the 6 broad categories, so a
+ * "robotics" person can separate combat bots from autonomous bots.
+ */
+export const INTEREST_TAGS = [
+  "ai-ml",
+  "web3",
+  "web-dev",
+  "competitive-programming",
+  "cybersecurity",
+  "robotics",
+  "hardware",
+  "cad-design",
+  "aerospace",
+  "civil",
+  "entrepreneurship",
+  "finance",
+  "gaming-esports",
+  "quiz",
+  "creative-media",
+] as const;
+
+export type InterestTag = (typeof INTEREST_TAGS)[number];
+
+/** Display labels for the tag chips. */
+export const INTEREST_LABELS: Record<InterestTag, string> = {
+  "ai-ml": "AI & ML",
+  "web3": "Web3",
+  "web-dev": "Web Dev",
+  "competitive-programming": "Competitive Programming",
+  "cybersecurity": "Cybersecurity",
+  "robotics": "Robotics",
+  "hardware": "Hardware",
+  "cad-design": "CAD & Design",
+  "aerospace": "Aerospace",
+  "civil": "Civil",
+  "entrepreneurship": "Entrepreneurship",
+  "finance": "Finance",
+  "gaming-esports": "Gaming & Esports",
+  "quiz": "Quiz",
+  "creative-media": "Creative & Media",
+};
+
+/** Ranking order for personalised results. */
+export const TIER_PRIORITY: Record<EventTier, number> = {
+  Flagship: 0,
+  Formal: 1,
+  Informal: 2,
+};
+
+export type EventTier = 'Flagship' | 'Formal' | 'Informal';
+export type EventDay = 1 | 2 | 3;
+
 export interface EventItem {
   id: string;
+  slug: string;
+  tier: EventTier;
+  days: EventDay[];
+  image?: string;
+  /** interest tags used by the filter and the personalisation modal */
+  interests: InterestTag[];
   title: string;
   subtitle: string;
   category: 'hackathon' | 'robotics' | 'coding' | 'esummit' | 'gaming' | 'workshops';
   club: string;
   prizePool: string;
   teamSize: string;
+  /** machine-readable team range; teamSize stays for display */
+  teamMin: number;
+  teamMax: number;
   venue: string;
   date: string;
   time: string;
@@ -13,7 +76,7 @@ export interface EventItem {
   overview: string;
   rules: string[];
   contacts: { name: string; phone: string; role: string }[];
-  status: 'Open' | 'Filling Fast' | 'Closed';
+  judgementCriteria?: string[];
   featured?: boolean;
 }
 
@@ -68,12 +131,18 @@ export const FEST_DETAILS = {
 export const EVENTS_DATA: EventItem[] = [
   {
     id: "hackquest-2026",
+    slug: "hackquest-2026",
+    tier: "Flagship",
+    days: [1, 2],
+    interests: ["ai-ml", "web3", "web-dev", "finance"],
     title: "HackQuest 2.0",
     subtitle: "36-Hour Flagship National Hackathon",
     category: "hackathon",
     club: "ACM & IEEE Student Branch BIT Mesra",
     prizePool: "₹1,50,000",
     teamSize: "2 - 4 Members",
+    teamMin: 2,
+    teamMax: 4,
     venue: "R&D Building & CAT Labs",
     date: "Oct 16 - 17, 2026",
     time: "09:00 AM (36 hrs non-stop)",
@@ -90,17 +159,22 @@ export const EVENTS_DATA: EventItem[] = [
       { name: "Aarav Sharma", phone: "+91 98765 43210", role: "Hackathon Lead" },
       { name: "Ananya Roy", phone: "+91 98123 45678", role: "Technical Logistics" }
     ],
-    status: "Filling Fast",
     featured: true
   },
   {
     id: "robowars-2026",
+    slug: "robowars-2026",
+    tier: "Flagship",
+    days: [2],
+    interests: ["robotics", "hardware"],
     title: "RoboWars: Steel Carnage",
     subtitle: "Heavyweight & Lightweight Robot Combat Arena",
     category: "robotics",
     club: "Robolution BIT Mesra",
     prizePool: "₹1,20,000",
     teamSize: "3 - 5 Members",
+    teamMin: 3,
+    teamMax: 5,
     venue: "Main Sports Complex Arena",
     date: "Oct 17, 2026",
     time: "02:00 PM - 07:00 PM",
@@ -117,17 +191,22 @@ export const EVENTS_DATA: EventItem[] = [
       { name: "Rohan Verma", phone: "+91 97654 32109", role: "RoboWars Convener" },
       { name: "Vikram Singh", phone: "+91 96543 21098", role: "Arena Safety Officer" }
     ],
-    status: "Open",
     featured: true
   },
   {
     id: "codezilla-2026",
+    slug: "codezilla-2026",
+    tier: "Formal",
+    days: [1],
+    interests: ["competitive-programming"],
     title: "Codezilla 2026",
     subtitle: "Speed Competitive Programming Clash",
     category: "coding",
     club: "ACM Student Chapter",
     prizePool: "₹60,000",
     teamSize: "Individual / Pair",
+    teamMin: 1,
+    teamMax: 2,
     venue: "Computer Centre (Lab 1 & 2)",
     date: "Oct 16, 2026",
     time: "02:00 PM - 05:00 PM",
@@ -141,17 +220,22 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Priya Malhotra", phone: "+91 95432 10987", role: "ACM Lead" }
     ],
-    status: "Open",
     featured: false
   },
   {
     id: "inventors-forge",
+    slug: "inventors-forge",
+    tier: "Flagship",
+    days: [2],
+    interests: ["entrepreneurship", "finance"],
     title: "Inventor's Forge",
     subtitle: "National B-Plan & Startup Pitch Competition",
     category: "esummit",
     club: "EDC (Entrepreneurship Development Cell)",
     prizePool: "₹80,000 + Incubation Grant",
     teamSize: "2 - 5 Members",
+    teamMin: 2,
+    teamMax: 5,
     venue: "CAT Hall 1",
     date: "Oct 17, 2026",
     time: "10:00 AM - 01:30 PM",
@@ -165,17 +249,22 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Aditya Vardhan", phone: "+91 94321 09876", role: "EDC President" }
     ],
-    status: "Open",
     featured: true
   },
   {
     id: "cad-clash",
+    slug: "cad-clash",
+    tier: "Formal",
+    days: [1],
+    interests: ["cad-design", "aerospace"],
     title: "CAD Clash & Aero Design",
     subtitle: "3D Mechanical Modeling & FEA Challenge",
     category: "workshops",
     club: "Team Firebolt & Team Srijan",
     prizePool: "₹45,000",
     teamSize: "1 - 3 Members",
+    teamMin: 1,
+    teamMax: 3,
     venue: "Mechanical CAD Lab",
     date: "Oct 16, 2026",
     time: "11:00 AM - 03:00 PM",
@@ -188,17 +277,22 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Kunal Ghosh", phone: "+91 93210 98765", role: "Team Srijan Lead" }
     ],
-    status: "Open",
     featured: false
   },
   {
     id: "valorant-showdown",
+    slug: "valorant-showdown",
+    tier: "Informal",
+    days: [1, 2, 3],
+    interests: ["gaming-esports"],
     title: "Pixel Arena: Valorant Championship",
     subtitle: "5v5 Collegiate Esports Tournament",
     category: "gaming",
     club: "Esports & Gaming Society BIT Mesra",
     prizePool: "₹50,000",
     teamSize: "5 + 1 Substitute",
+    teamMin: 5,
+    teamMax: 6,
     venue: "Gaming Lounge (Student Activity Centre)",
     date: "Oct 16 - 18, 2026",
     time: "06:00 PM Onwards",
@@ -212,17 +306,22 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Siddharth Jha", phone: "+91 92109 87654", role: "Esports Head" }
     ],
-    status: "Filling Fast",
     featured: true
   },
   {
     id: "maze-runner-bot",
+    slug: "maze-runner-bot",
+    tier: "Formal",
+    days: [3],
+    interests: ["robotics", "hardware", "ai-ml"],
     title: "Maze Runner & Line Follower",
     subtitle: "Autonomous Micro-Robotics Challenge",
     category: "robotics",
     club: "Robolution",
     prizePool: "₹40,000",
     teamSize: "2 - 4 Members",
+    teamMin: 2,
+    teamMax: 4,
     venue: "Inner Quadrangle",
     date: "Oct 18, 2026",
     time: "10:00 AM - 01:00 PM",
@@ -235,17 +334,22 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Megha Sahu", phone: "+91 91098 76543", role: "Robotics Core" }
     ],
-    status: "Open",
     featured: false
   },
   {
     id: "ai-llm-workshop",
+    slug: "ai-llm-workshop",
+    tier: "Formal",
+    days: [2],
+    interests: ["ai-ml", "web-dev"],
     title: "Hands-on Generative AI & Edge LLMs",
     subtitle: "Industrial Masterclass & Certification",
     category: "workshops",
     club: "IEEE Student Branch",
     prizePool: "Certificates & Cloud Credits",
     teamSize: "Individual",
+    teamMin: 1,
+    teamMax: 1,
     venue: "Main Auditorium",
     date: "Oct 17, 2026",
     time: "09:30 AM - 12:30 PM",
@@ -258,7 +362,6 @@ export const EVENTS_DATA: EventItem[] = [
     contacts: [
       { name: "Tanmay Das", phone: "+91 90123 45678", role: "IEEE Chair" }
     ],
-    status: "Open",
     featured: false
   }
 ];

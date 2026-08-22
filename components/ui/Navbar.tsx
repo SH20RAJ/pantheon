@@ -23,14 +23,11 @@ export default function Navbar() {
       <nav className="mx-auto max-w-7xl">
         <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center">
           <div className="flex items-center">
-<<<<<<< HEAD
-            <a href="#" className="group flex items-center gap-3">
-=======
+
             <Link
               href="/"
               className="group flex items-center gap-3"
             >
->>>>>>> origin/main
               <div className="relative grid size-10 place-items-center">
                 <Image
                   src="/pantheon_logo_white.png"

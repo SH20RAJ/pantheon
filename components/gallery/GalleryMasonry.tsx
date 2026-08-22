@@ -162,70 +162,100 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const hasMounted = useRef(false);
 
-  useLayoutEffect(() => {
-  if (!grid.length) return;
+    useLayoutEffect(() => {
+    if (!grid.length) return;
 
-  grid.forEach((item, index) => {
-    if (item.id === activeId) return;
+    grid.forEach((item, index) => {
+      if (item.id === activeId) return;
 
-    const selector = `[data-key="${item.id}"]`;
-    const element = document.querySelector<HTMLElement>(selector);
+      const selector = `[data-key="${item.id}"]`;
+      const element = document.querySelector<HTMLElement>(selector);
 
-    if (!element) return;
+      if (!element) return;
 
-    const animProps = {
-      x: item.x,
-      y: item.y,
-      width: item.w,
-      height: item.h
-    };
-
-    if (!hasMounted.current) {
-      const start = getInitialPosition(item);
-
-      // Set the starting position immediately
-      gsap.set(element, {
-        opacity: 0,
-        x: start.x,
-        y: start.y,
+      const animProps = {
+        x: item.x,
+        y: item.y,
         width: item.w,
-        height: item.h,
-        ...(blurToFocus && {
-          filter: 'blur(10px)'
-        })
-      });
+        height: item.h
+      };
 
-      // Then animate from that position
-      gsap.to(element, {
-        opacity: 1,
-        ...animProps,
-        ...(blurToFocus && {
-          filter: 'blur(0px)'
-        }),
-        duration: 0.8,
-        ease: 'power3.out',
-        delay: index * stagger
-      });
-    } else {
-      gsap.to(element, {
-        ...animProps,
-        duration,
-        ease,
-        overwrite: 'auto'
-      });
-    }
-  });
+      if (!hasMounted.current) {
+        const start = getInitialPosition(item);
 
-  hasMounted.current = true;
-}, [
-  grid,
-  stagger,
-  animateFrom,
-  blurToFocus,
-  duration,
-  ease,
-  activeId
-]);
+        // Set the starting position immediately
+        gsap.set(element, {
+          opacity: 0,
+          x: start.x,
+          y: start.y,
+          width: item.w,
+          height: item.h,
+          ...(blurToFocus && {
+            filter: 'blur(10px)'
+          })
+        });
+
+        // Then animate from that position
+        gsap.to(element, {
+          opacity: 1,
+          ...animProps,
+          ...(blurToFocus && {
+            filter: 'blur(0px)'
+          }),
+          duration: 0.8,
+          ease: 'power3.out',
+          delay: index * stagger
+        });
+      } else {
+        gsap.to(element, {
+          ...animProps,
+          duration,
+          ease,
+          overwrite: 'auto'
+        });
+      }
+    });
+
+    hasMounted.current = true;
+  }, [
+    grid,
+    stagger,
+    animateFrom,
+    blurToFocus,
+    duration,
+    ease,
+    activeId
+  ]);
+
+  useEffect(() => {
+    if (!grid.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement;
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              img.removeAttribute('data-src');
+            }
+            observer.unobserve(img);
+          }
+        });
+      },
+      {
+        rootMargin: '300px 0px',
+        threshold: 0.01,
+      }
+    );
+
+    const images = document.querySelectorAll<HTMLImageElement>(
+      '.masonry-img[data-src]'
+    );
+    images.forEach((img) => observer.observe(img));
+
+    return () => observer.disconnect();
+  }, [grid]);
 
   // ---------------------------------------------------------------------
   // Expand
@@ -389,9 +419,8 @@ const Masonry: React.FC<MasonryProps> = ({
               }}
             >
               <img
-                src={item.img}
+                data-src={item.img}
                 alt=""
-                loading="lazy"
                 decoding="async"
                 className="masonry-img absolute inset-0 w-full h-full object-cover"
                 style={{

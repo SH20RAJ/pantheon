@@ -40,6 +40,7 @@ const imageLogos = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white">
+
       <section className="relative h-screen w-full overflow-hidden">
         <div className="absolute inset-0">
           <FaultyTerminal
@@ -69,7 +70,7 @@ export default function Home() {
             alt="Pantheon"
             width={600}
             height={600}
-            className="h-auto w-125 md:w-162.5"
+             className="h-auto w-[500px] md:w-[650px]"
             priority
           />
         </div>

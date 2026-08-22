@@ -15,9 +15,10 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-6">
       <nav className="mx-auto max-w-7xl">
-        <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center">
-          <div className="flex items-center">
 
+        <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center">
+
+          <div className="flex items-center">
             <Link
               href="/"
               className="group flex items-center gap-3"
@@ -44,6 +45,7 @@ export default function Navbar() {
           </div>
 
           <div className="relative flex items-center border border-pantheon-border bg-pantheon-black/50 backdrop-blur-xl">
+          
             <span className="absolute -top-[4px] left-1/2 size-2 -translate-x-1/2 rotate-45 border border-pantheon-purple-light/50 bg-pantheon-black" />
 
             {navItems.map((item) => (
@@ -110,7 +112,10 @@ export default function Navbar() {
           >
             <div className="flex items-center gap-3">
               <div className="grid size-8 place-items-center border border-white/15">
-                <Hexagon size={16} className="text-pantheon-purple-light" />
+                <Hexagon
+                  size={16}
+                  className="text-pantheon-purple-light"
+                />
               </div>
 
               <div>
@@ -175,6 +180,7 @@ export default function Navbar() {
             </Link>
           </div>
         </details>
+        
       </nav>
     </header>
   );

@@ -190,7 +190,7 @@ const Footer = () => {
 
      
             <a
-              href="#register"
+              href="/profile"
               className="
                 group mt-4 flex w-full min-w-[200px]
                 items-center justify-between gap-4

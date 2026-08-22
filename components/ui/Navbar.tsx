@@ -75,7 +75,7 @@ export default function Navbar() {
 
           <div className="flex justify-end">
             <a
-              href="#register"
+              href="/profile"
               className="
                 group relative flex items-center gap-4
                 border border-white/15
@@ -109,9 +109,11 @@ export default function Navbar() {
           >
             <div className="flex items-center gap-3">
               <div className="grid size-8 place-items-center border border-white/15">
-                <Hexagon
-                  size={16}
-                  className="text-pantheon-purple-light"
+                <Image
+                  src="/pantheon_logo_white.png"
+                  alt="Pantheon"
+                  height={100}
+                  width={100}
                 />
               </div>
 
@@ -161,7 +163,7 @@ export default function Navbar() {
             ))}
 
             <a
-              href="#register"
+              href="/profile"
               className="
                 mt-2 flex items-center
                 justify-between

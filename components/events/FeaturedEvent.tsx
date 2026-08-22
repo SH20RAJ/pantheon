@@ -19,17 +19,15 @@ export default function FeaturedEvent({
         flex-col justify-between overflow-hidden rounded-pantheon-lg p-8
       "
     >
+      {/* static bloom — no hover transition */}
       <span
         aria-hidden
         className="
           absolute -right-20 -top-20 -z-10 size-72 rounded-full
-          bg-pantheon-purple-glow blur-[80px]
-          opacity-50 transition-opacity duration-700 ease-pantheon
-          group-hover:opacity-100
+          bg-pantheon-purple-glow blur-[80px] opacity-50
         "
       />
       <span aria-hidden className="pantheon-grid-bg absolute inset-0 -z-10 opacity-50" />
-      <span aria-hidden className="pantheon-sheen absolute inset-0 z-10 overflow-hidden" />
 
       <span
         aria-hidden

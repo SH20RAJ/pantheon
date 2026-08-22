@@ -29,19 +29,6 @@ export default function EventCard({
         ${isFlagship ? "pantheon-card-flagship" : ""}
       `}
     >
-      {/* hover bloom, clipped by the rounded surface */}
-      <span
-        aria-hidden
-        className="
-          absolute -left-16 -top-16 -z-10 size-52 rounded-full
-          bg-pantheon-purple-glow blur-[64px]
-          opacity-0 transition-opacity duration-700 ease-pantheon
-          group-hover:opacity-100
-        "
-      />
-
-      <span aria-hidden className="pantheon-sheen absolute inset-0 z-10 overflow-hidden" />
-
       {/* ghost numeral */}
       <span
         aria-hidden

@@ -156,19 +156,24 @@ const Footer = () => {
                 {
                   icon: FaInstagram,
                   label: "Insta",
+                  href: "https://www.instagram.com/pantheon_techfest/?hl=en",
                 },
                 {
                   icon: FaLinkedin,
                   label: "LinkedIn",
+                  href: "https://www.linkedin.com/company/pantheon-bit-mesra/",
                 },
                 {
                   icon: FaGithub,
                   label: "GitHub",
+                  href: "https://github.com/SH20RAJ/pantheon",
                 },
               ].map((social, idx) => (
                 <a
                   key={idx}
-                  href="#"
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="
                     flex h-10 w-10 items-center justify-center
                     rounded-lg

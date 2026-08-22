@@ -1,10 +1,44 @@
 import FaultyTerminal from "@/components/ui/FaultyTerminal";
+import TextLoop from "@/components/ui/TextLoop";
+import LogoLoop from "@/components/ui/LogoLoop";
 import Image from "next/image";
+
+const imageLogos = [
+  {
+    src: "/sponsors/Cmpdi.png",
+    alt: "CMPDI",
+    href: "#",
+  },
+  {
+    src: "/sponsors/Frostive.png",
+    alt: "T Frostive",
+    href: "#",
+  },
+  {
+    src: "/sponsors/JharkhandTourism.png",
+    alt: "Jharkhand Tourism",
+    href: "#",
+  },
+  {
+    src: "/sponsors/Nestle.png",
+    alt: "Nestlé",
+    href: "#",
+  },
+  {
+    src: "/sponsors/Red-Bull.png",
+    alt: "Red Bull",
+    href: "#",
+  },
+  {
+    src: "/sponsors/SBI.png",
+    alt: "SBI",
+    href: "#",
+  },
+];
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-black text-white">
-
       <section className="relative h-screen w-full overflow-hidden">
         <div className="absolute inset-0">
           <FaultyTerminal
@@ -38,7 +72,44 @@ export default function Home() {
             priority
           />
         </div>
+      </section>
 
+      <section className="my-20">
+        <TextLoop
+          className="mb-16"
+          text="sponsors"
+          shape="line"
+          speed={80}
+          direction="forward"
+          separator="✦"
+          curviness={90}
+          fontSize={38}
+          fontWeight={800}
+          letterSpacing={5}
+          uppercase
+          color="#ffffff"
+          ribbon
+          ribbonColor="#5227FF"
+          ribbonWidth={72}
+          pauseOnHover={false}
+        />
+
+        <div
+          style={{ height: "200px", position: "relative", overflow: "hidden" }}
+        >
+          <LogoLoop
+            logos={imageLogos}
+            speed={50}
+            direction="right"
+            logoHeight={170}
+            gap={60}
+            hoverSpeed={0}
+            scaleOnHover={false}
+            fadeOut
+            fadeOutColor="#000000"
+            ariaLabel="Technology partners"
+          />
+        </div>
       </section>
     </main>
   );

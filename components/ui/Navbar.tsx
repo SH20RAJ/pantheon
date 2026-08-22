@@ -2,10 +2,11 @@ import { ArrowUpRight, Menu, Hexagon } from "lucide-react";
 import Image from "next/image";
 
 const navItems = [
-  { label: "01 / Gallery", href: "/gallery" },
-  { label: "02 / Team", href: "#team" },
-  { label: "03 / Schedule", href: "#schedule" },
-  { label: "04 / About", href: "#about" },
+  { label: "01 / Home", href: "/" },
+  { label: "02 / Gallery", href: "/gallery" },
+  { label: "03 / Team", href: "#team" },
+  { label: "04 / Schedule", href: "#schedule" },
+  { label: "05 / About", href: "#about" },
 ];
 
 export default function Navbar() {

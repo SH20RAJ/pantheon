@@ -1,11 +1,19 @@
 "use client";
 
-import { Search, X } from "lucide-react";
-import type { EventDay, EventTier } from "@/app/data/pantheonData";
+import { Search, X, Sparkles } from "lucide-react";
+import {
+  INTEREST_TAGS,
+  INTEREST_LABELS,
+  type EventDay,
+  type EventTier,
+  type InterestTag,
+} from "@/app/data/pantheonData";
 
 export type Filters = {
   tier: EventTier | null;
   day: EventDay | null;
+  /** multi-select: an event matches if it carries ANY selected tag */
+  interests: InterestTag[];
   q: string;
 };
 
@@ -71,7 +79,17 @@ export default function EventFilters({
   total: number;
 }) {
   const active =
-    filters.tier !== null || filters.day !== null || filters.q.trim() !== "";
+    filters.tier !== null ||
+    filters.day !== null ||
+    filters.interests.length > 0 ||
+    filters.q.trim() !== "";
+
+  const toggleInterest = (tag: InterestTag) =>
+    onChange({
+      interests: filters.interests.includes(tag)
+        ? filters.interests.filter((t) => t !== tag)
+        : [...filters.interests, tag],
+    });
 
   return (
     // Sits in the document flow — scrolls away with the page.
@@ -141,6 +159,38 @@ export default function EventFilters({
           </div>
         </div>
 
+        {/* ── interest tags ───────────────────────────── */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="mr-1 flex shrink-0 items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.28em] text-pantheon-subtle">
+            <Sparkles size={10} className="text-pantheon-purple-light" />
+            Interest
+          </span>
+
+          {INTEREST_TAGS.map((tag) => {
+            const on = filters.interests.includes(tag);
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => toggleInterest(tag)}
+                aria-pressed={on}
+                className={`
+                  rounded-full border px-3 py-1.5
+                  font-mono text-[9px] uppercase tracking-[0.16em]
+                  transition-colors duration-200
+                  ${
+                    on
+                      ? "border-pantheon-purple-line bg-pantheon-purple-dim text-pantheon-purple-light"
+                      : "border-pantheon-border-subtle text-pantheon-subtle hover:border-pantheon-border hover:text-pantheon-white"
+                  }
+                `}
+              >
+                {INTEREST_LABELS[tag]}
+              </button>
+            );
+          })}
+        </div>
+
         {/* ── readout ─────────────────────────────────── */}
         <div className="mt-3 flex items-center justify-between px-4">
           <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-pantheon-subtle">
@@ -154,7 +204,7 @@ export default function EventFilters({
           {active && (
             <button
               type="button"
-              onClick={() => onChange({ tier: null, day: null, q: "" })}
+              onClick={() => onChange({ tier: null, day: null, interests: [], q: "" })}
               className="
                 group flex items-center gap-2 rounded-full
                 border border-pantheon-border px-3 py-1.5

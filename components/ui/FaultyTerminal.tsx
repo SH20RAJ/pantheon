@@ -345,7 +345,9 @@ export default function FaultyTerminal({
       );
     }
 
-    const resizeObserver = new ResizeObserver(() => resize());
+    const resizeObserver = new ResizeObserver(() => {
+      requestAnimationFrame(() => resize());
+    });
     resizeObserver.observe(ctn);
     resize();
 

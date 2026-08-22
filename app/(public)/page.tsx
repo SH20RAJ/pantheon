@@ -1,11 +1,10 @@
 import FaultyTerminal from "@/components/ui/FaultyTerminal";
 import Image from "next/image";
 import PantheonGallery from '@/components/ui/PantheonGallery';
-import DotGrid from '@/components/ui/Dotgrid';
 import ScrollTakeover from "@/components/ui/ScrollTakeover";
-import Dayhighlight from "@/components/ui/Dayhighlight";
 import AboutPantheon from "@/components/ui/AboutPantheon";
 import Sponsors from "@/components/ui/Sponsors";
+import DayHighlights from "@/components/landing/DayHighlights";
 
 const galleryImages = [
   "/globe_1.jpeg",
@@ -60,22 +59,22 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      {/* 1. Normal Hero Section */}
       {heroContent}
 
-      {/* 2. About Pantheon Section */}
       <AboutPantheon />
 
-      {/* 3. Day 1 Highlights Section (Normal Scroll) */}
-      <Dayhighlight />
 
-      {/* 4. ScrollTakeover: Pins Sponsors, PantheonGallery slides over it */}
+      <DayHighlights />
+
       <ScrollTakeover hero={<Sponsors />}>  
-        {/* Gallery Section */}
+
         <section className="relative w-full min-h-screen bg-[#050505] flex items-center justify-center">
           <PantheonGallery images={galleryImages} />
         </section>
       </ScrollTakeover>
+
+      
+
     </main>
   );
 }

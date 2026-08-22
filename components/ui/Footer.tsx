@@ -69,7 +69,7 @@ const Footer = () => {
             ].map((link) => (
               <a
                 key={link}
-                href={`#${link.toLowerCase()}`}
+                href={link === "Team" ? "/teams" : `#${link.toLowerCase()}`}
                 className="
                   group flex w-fit items-center gap-2
                   text-[12px] font-medium

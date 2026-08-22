@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { MOCK_TEAMS, MOCK_LOGGED_IN_STUDENT } from "@/app/data/teamsData";
 
 // Team emblem SVG renderer supporting all 12 teams
@@ -88,15 +88,44 @@ function TeamEmblem({ teamId, className = "size-10" }: { teamId: string; classNa
 }
 
 export default function TeamsPage() {
+  const [searchQuery, setSearchQuery] = useState("");
   const currentTeamId = MOCK_LOGGED_IN_STUDENT.permanentTeamId;
 
-  // Pin user's team to the top, then sort others by rank (or name alphabetically)
-  // Let's sort alphabetically by name as the default directory order, with the pinned one at index 0.
-  const sortedTeams = [...MOCK_TEAMS].sort((a, b) => {
-    if (a.id === currentTeamId) return -1;
-    if (b.id === currentTeamId) return 1;
-    return a.name.localeCompare(b.name);
-  });
+  // Find user's permanent team details
+  const userTeam = useMemo(() => {
+    return MOCK_TEAMS.find(t => t.id === currentTeamId);
+  }, [currentTeamId]);
+
+  // Compute points to next higher team for user's competitive stat
+  const competitiveStat = useMemo(() => {
+    if (!userTeam) return null;
+
+    const nextHigherTeam = MOCK_TEAMS.find(t => t.rank === userTeam.rank - 1);
+    if (!nextHigherTeam) return null;
+
+    const diff = nextHigherTeam.totalPoints - userTeam.totalPoints;
+    return {
+      points: diff,
+      targetRank: nextHigherTeam.rank
+    };
+  }, [userTeam]);
+
+  // Standard alphabetical sorting of all teams for the directory grid
+  const alphabeticalTeams = useMemo(() => {
+    return [...MOCK_TEAMS].sort((a, b) => a.name.localeCompare(b.name));
+  }, []);
+
+  // Filter grid based on search query (functional search filter)
+  const filteredTeams = useMemo(() => {
+    if (!searchQuery.trim()) return alphabeticalTeams;
+    const q = searchQuery.toLowerCase();
+    return alphabeticalTeams.filter(
+      (t) =>
+        t.name.toLowerCase().includes(q) ||
+        t.slug.toLowerCase().includes(q) ||
+        (t.slogan && t.slogan.toLowerCase().includes(q))
+    );
+  }, [alphabeticalTeams, searchQuery]);
 
   return (
     <main className="min-h-screen bg-black text-white pt-28 pb-20 font-mono">
@@ -111,7 +140,7 @@ export default function TeamsPage() {
 
       <div className="relative mx-auto max-w-7xl px-4 md:px-6">
         {/* Header Section */}
-        <div className="border-b border-pantheon-border pb-8 mb-12">
+        <div className="border-b border-pantheon-border pb-8 mb-10">
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="flex items-center gap-2 mb-3">
@@ -135,111 +164,235 @@ export default function TeamsPage() {
           </div>
         </div>
 
-        {/* Directory Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedTeams.map((team) => {
-            const isUserTeam = team.id === currentTeamId;
+        {/* Featured "Your Team" Section */}
+        {userTeam && (
+          <div className="mb-12">
+            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-pantheon-purple-light mb-4">
+              YOUR TEAM
+            </h2>
+            
+            <div className="
+              relative rounded-[1rem] border border-pantheon-purple/45 bg-gradient-to-b from-pantheon-purple/[0.03] to-transparent
+              shadow-[0_0_20px_rgba(124,58,237,0.05),inset_0_1px_0_0_rgba(255,255,255,0.08)]
+              p-6 md:p-8
+            ">
+              {/* Specular top accent edge */}
+              <div className="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-pantheon-purple-light/40 to-transparent pointer-events-none" />
 
-            return (
-              <a
-                key={team.id}
-                href={`/teams/${team.id}`}
-                className={`
-                  group relative flex flex-col justify-between
-                  rounded-[1rem] bg-gradient-to-b from-white/[0.03] to-transparent
-                  shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]
-                  p-6 border min-h-[220px]
-                  transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
-                  hover:-translate-y-0.5
-                  ${
-                    isUserTeam
-                      ? "border-pantheon-purple/50 bg-pantheon-purple/[0.03] shadow-[0_0_20px_rgba(124,58,237,0.12),inset_0_1px_0_0_rgba(255,255,255,0.12)] hover:border-pantheon-purple"
-                      : "border-pantheon-border hover:border-pantheon-purple/40 hover:shadow-[0_4px_25px_rgba(124,58,237,0.1)]"
-                  }
-                `}
+              <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                {/* Emblem, Name, Slogan */}
+                <div className="flex items-center gap-5">
+                  <div className="grid size-16 place-items-center border border-pantheon-purple/35 bg-pantheon-purple/[0.08] text-pantheon-purple-light rounded-xl">
+                    <TeamEmblem teamId={userTeam.id} className="size-9" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-black uppercase tracking-wider text-white">
+                      {userTeam.name}
+                    </h3>
+                    {userTeam.slogan && (
+                      <p className="text-xs text-pantheon-muted italic tracking-wide mt-1">
+                        "{userTeam.slogan}"
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Readout stats and CTA */}
+                <div className="grid grid-cols-2 gap-4 sm:flex sm:items-center sm:gap-8 border-t border-pantheon-border-subtle pt-6 md:border-t-0 md:pt-0">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] uppercase tracking-[0.15em] text-pantheon-subtle font-bold mb-1">
+                      RANK
+                    </span>
+                    <span className="text-sm font-bold text-white uppercase font-mono">
+                      Rank #{userTeam.rank}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <span className="text-[9px] uppercase tracking-[0.15em] text-pantheon-subtle font-bold mb-1">
+                      SCORE
+                    </span>
+                    <div className="flex flex-col">
+                      <span className="text-sm font-bold text-pantheon-purple-light font-mono">
+                        {userTeam.totalPoints} PTS
+                      </span>
+                      {competitiveStat && (
+                        <span className="text-[8px] font-mono text-pantheon-purple-light/75 tracking-wider mt-0.5 whitespace-nowrap">
+                          {competitiveStat.points} PTS TO #{competitiveStat.targetRank}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <span className="text-[9px] uppercase tracking-[0.15em] text-pantheon-subtle font-bold mb-1">
+                      ROSTER
+                    </span>
+                    <span className="text-sm font-semibold text-white uppercase font-mono">
+                      {userTeam.memberCount} Members
+                    </span>
+                  </div>
+
+                  <div className="col-span-2 sm:col-span-1 flex items-end">
+                    <a
+                      href={`/teams/${userTeam.id}`}
+                      className="
+                        w-full text-center border border-pantheon-purple/50 bg-pantheon-purple/10 hover:bg-pantheon-purple/25
+                        px-6 py-3 text-[10px] uppercase tracking-[0.18em] font-bold text-pantheon-white
+                        transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
+                        hover:shadow-[0_0_15px_var(--color-pantheon-purple-glow)]
+                      "
+                    >
+                      VIEW YOUR TEAM →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Minimal Search Bar (kept as it is fully functional) */}
+        <div className="mb-6 max-w-md">
+          <div className="relative flex items-center">
+            <span className="absolute left-3 text-pantheon-purple-light font-bold text-xs select-none">
+              &gt;
+            </span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="SEARCH REGISTERED TEAMS..."
+              className="
+                w-full bg-black/40 border border-pantheon-border rounded-lg py-2.5 pl-8 pr-4
+                font-mono text-xs text-white placeholder-pantheon-muted uppercase tracking-wider
+                outline-none transition-all duration-300
+                focus:border-pantheon-purple/50 focus:shadow-[0_0_15px_rgba(124,58,237,0.08)]
+              "
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 text-pantheon-muted hover:text-white transition-colors text-[10px] uppercase font-bold"
               >
-                {/* Background wash for user team */}
-                {isUserTeam && (
-                  <div className="absolute inset-0 rounded-[1rem] bg-pantheon-purple/[0.02] pointer-events-none" />
-                )}
+                [CLEAR]
+              </button>
+            )}
+          </div>
+        </div>
 
-                {/* Card Top Block */}
-                <div>
-                  <div className="flex items-start justify-between mb-4">
-                    {/* Emblem & Name */}
-                    <div className="flex items-center gap-3">
-                      <div className={`
-                        grid size-12 place-items-center border rounded-lg
-                        ${
-                          isUserTeam
-                            ? "border-pantheon-purple/35 bg-pantheon-purple/[0.08] text-pantheon-purple-light"
-                            : "border-pantheon-border bg-white/[0.02] text-pantheon-muted group-hover:text-pantheon-purple-light group-hover:border-pantheon-purple/30"
-                        }
-                        transition-colors duration-300
-                      `}>
-                        <TeamEmblem teamId={team.id} className="size-6" />
+        {/* All Teams Section */}
+        <div className="mb-6">
+          <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-pantheon-muted mb-4">
+            ALL TEAMS
+          </h2>
+
+          {/* Directory Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTeams.map((team) => {
+              const isUserTeam = team.id === currentTeamId;
+
+              return (
+                <a
+                  key={team.id}
+                  href={`/teams/${team.id}`}
+                  className={`
+                    group relative flex flex-col justify-between
+                    rounded-[1rem] bg-gradient-to-b from-white/[0.03] to-transparent
+                    shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]
+                    p-6 border min-h-[220px]
+                    transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
+                    hover:-translate-y-0.5
+                    ${
+                      isUserTeam
+                        ? "border-pantheon-purple/35 bg-pantheon-purple/[0.01] hover:border-pantheon-purple/50"
+                        : "border-pantheon-border hover:border-pantheon-purple/40 hover:shadow-[0_4px_25px_rgba(124,58,237,0.1)]"
+                    }
+                  `}
+                >
+                  {/* Card Top Block */}
+                  <div>
+                    <div className="flex items-start justify-between mb-4">
+                      {/* Emblem & Name */}
+                      <div className="flex items-center gap-3">
+                        <div className={`
+                          grid size-12 place-items-center border rounded-lg
+                          ${
+                            isUserTeam
+                              ? "border-pantheon-purple/30 bg-pantheon-purple/[0.05] text-pantheon-purple-light"
+                              : "border-pantheon-border bg-white/[0.02] text-pantheon-muted group-hover:text-pantheon-purple-light group-hover:border-pantheon-purple/30"
+                          }
+                          transition-colors duration-300
+                        `}>
+                          <TeamEmblem teamId={team.id} className="size-6" />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-bold uppercase tracking-wider text-white group-hover:text-pantheon-purple-light transition-colors duration-300">
+                            {team.name}
+                          </h3>
+                          <span className="text-[9px] uppercase tracking-[0.1em] text-pantheon-subtle">
+                            {team.slug}
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-sm font-bold uppercase tracking-wider text-white group-hover:text-pantheon-purple-light transition-colors duration-300">
-                          {team.name}
-                        </h3>
-                        <span className="text-[9px] uppercase tracking-[0.1em] text-pantheon-subtle">
-                          {team.slug}
+
+                      {/* Badge tags */}
+                      <div className="flex flex-col items-end gap-1.5">
+                        {isUserTeam && (
+                          <span className="rounded-full bg-pantheon-purple/8 border border-pantheon-purple/30 text-pantheon-purple-light text-[8px] px-2 py-0.5 tracking-[0.1em] font-bold uppercase whitespace-nowrap">
+                            Your Team
+                          </span>
+                        )}
+                        <span className="rounded-full bg-white/[0.04] border border-white/5 text-pantheon-muted text-[8px] px-2 py-0.5 tracking-[0.1em] font-semibold uppercase">
+                          Rank #{team.rank}
                         </span>
                       </div>
                     </div>
 
-                    {/* Badge tags */}
-                    <div className="flex flex-col items-end gap-1.5">
-                      {isUserTeam && (
-                        <span className="rounded-full bg-pantheon-purple/8 border border-pantheon-purple/35 text-pantheon-purple-light text-[8px] px-2 py-0.5 tracking-[0.1em] font-bold uppercase whitespace-nowrap">
-                          Your Team
-                        </span>
-                      )}
-                      <span className="rounded-full bg-white/[0.04] border border-white/5 text-pantheon-muted text-[8px] px-2 py-0.5 tracking-[0.1em] font-semibold uppercase">
-                        Rank #{team.rank}
+                    {/* Slogan */}
+                    {team.slogan && (
+                      <p className="text-[11px] text-pantheon-muted italic tracking-wide leading-relaxed line-clamp-2 mt-2">
+                        "{team.slogan}"
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Card Bottom Block */}
+                  <div className="mt-6 pt-4 border-t border-pantheon-border-subtle flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-[9px] uppercase tracking-[0.12em] text-pantheon-subtle">
+                        Total Score
+                      </span>
+                      <span className="text-xs font-bold text-pantheon-purple-light">
+                        {team.totalPoints} PTS
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col items-end">
+                      <span className="text-[9px] uppercase tracking-[0.12em] text-pantheon-subtle">
+                        Roster Size
+                      </span>
+                      <span className="text-xs font-semibold text-white">
+                        {team.memberCount} Members
                       </span>
                     </div>
                   </div>
 
-                  {/* Slogan */}
-                  {team.slogan && (
-                    <p className="text-[11px] text-pantheon-muted italic tracking-wide leading-relaxed line-clamp-2 mt-2">
-                      "{team.slogan}"
-                    </p>
-                  )}
-                </div>
-
-                {/* Card Bottom Block */}
-                <div className="mt-6 pt-4 border-t border-pantheon-border-subtle flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <span className="text-[9px] uppercase tracking-[0.12em] text-pantheon-subtle">
-                      Total Score
-                    </span>
-                    <span className="text-xs font-bold text-pantheon-purple-light">
-                      {team.totalPoints} PTS
-                    </span>
+                  {/* Interaction Text Footer */}
+                  <div className="mt-3 flex items-center justify-end text-[9px] uppercase tracking-[0.15em] font-bold text-pantheon-subtle group-hover:text-pantheon-purple-light transition-colors duration-300">
+                    VIEW PROFILE →
                   </div>
 
-                  <div className="flex flex-col items-end">
-                    <span className="text-[9px] uppercase tracking-[0.12em] text-pantheon-subtle">
-                      Roster Size
-                    </span>
-                    <span className="text-xs font-semibold text-white">
-                      {team.memberCount} Members
-                    </span>
+                  {/* Hover arrow element */}
+                  <div className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-pantheon-purple-light">
+                    <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
                   </div>
-                </div>
-
-                {/* Hover arrow element */}
-                <div className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-pantheon-purple-light">
-                  <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </a>
-            );
-          })}
+                </a>
+              );
+            })}
+          </div>
         </div>
       </div>
     </main>

@@ -2,7 +2,7 @@ import { ArrowUpRight, Menu, Hexagon } from "lucide-react";
 import Image from "next/image";
 
 const navItems = [
-  { label: "01 / Events", href: "#events" },
+  { label: "01 / Gallery", href: "/gallery" },
   { label: "02 / Team", href: "#team" },
   { label: "03 / Schedule", href: "#schedule" },
   { label: "04 / About", href: "#about" },
@@ -12,14 +12,9 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 md:px-6">
       <nav className="mx-auto max-w-7xl">
-
         <div className="hidden lg:grid grid-cols-[1fr_auto_1fr] items-center">
-
           <div className="flex items-center">
-            <a
-              href="#"
-              className="group flex items-center gap-3"
-            >
+            <a href="#" className="group flex items-center gap-3">
               <div className="relative grid size-10 place-items-center">
                 <Image
                   src="/pantheon_logo_white.png"
@@ -42,7 +37,6 @@ export default function Navbar() {
           </div>
 
           <div className="relative flex items-center border border-pantheon-border bg-pantheon-black/50 backdrop-blur-xl">
-
             <span className="absolute -top-[4px] left-1/2 size-2 -translate-x-1/2 rotate-45 border border-pantheon-purple-light/50 bg-pantheon-black" />
 
             {navItems.map((item) => (
@@ -109,10 +103,7 @@ export default function Navbar() {
           >
             <div className="flex items-center gap-3">
               <div className="grid size-8 place-items-center border border-white/15">
-                <Hexagon
-                  size={16}
-                  className="text-pantheon-purple-light"
-                />
+                <Hexagon size={16} className="text-pantheon-purple-light" />
               </div>
 
               <div>
@@ -177,7 +168,6 @@ export default function Navbar() {
             </a>
           </div>
         </details>
-
       </nav>
     </header>
   );

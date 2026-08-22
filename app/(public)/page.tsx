@@ -1,5 +1,6 @@
 import FaultyTerminal from "@/components/ui/FaultyTerminal";
 import Image from "next/image";
+import DayHighlights from "@/components/landing/DayHighlights";
 
 export default function Home() {
   return (
@@ -40,6 +41,10 @@ export default function Home() {
         </div>
 
       </section>
+
+      {/* Day Highlights — interactive bento grid */}
+      <DayHighlights />
+
     </main>
   );
 }

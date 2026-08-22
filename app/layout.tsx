@@ -6,6 +6,7 @@ import { JetBrains_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
+import GlobalStyles from "@/components/ui/GlobalStyles";
 
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className="bg-black text-white antialiased selection:bg-white selection:text-black">
+        <GlobalStyles />
         {/* <HexclaveProvider app={hexclaveServerApp}> */}
           {/* <HexclaveTheme> */}
           <Navbar />

@@ -2,6 +2,7 @@ import FaultyTerminal from "@/components/ui/FaultyTerminal";
 import TextLoop from "@/components/ui/TextLoop";
 import LogoLoop from "@/components/ui/LogoLoop";
 import Image from "next/image";
+import DayHighlights from "@/components/landing/DayHighlights";
 
 const imageLogos = [
   {
@@ -111,6 +112,10 @@ export default function Home() {
           />
         </div>
       </section>
+
+      {/* Day Highlights — interactive bento grid */}
+      <DayHighlights />
+
     </main>
   );
 }
